@@ -1,100 +1,75 @@
-from flask import Flask, render_template,request,redirect,url_for
-# import mysql.connector
+from flask import Flask, render_template, request, redirect, url_for, g
+import sqlite3
+
 app=Flask(__name__)
+DATABASE = 'FlickFinder.db'
 
-# db=mysql.connector.connect(
-#     host="localhost",
-#     user="root",
-#     password="password",
-#     database="picknflix"
-# )
-#
-# cursor=db.cursor()
+# Database connection
+def get_db():
+    if 'db' not in g:
+        g.db = sqlite3.connect(DATABASE)
+        g.db.row_factory = sqlite3.Row  # Access rows as dictionaries
+    return g.db
 
-i=0
+@app.teardown_appcontext
+def close_db(exception):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
 
-@app.route("/home.html")
+# Routes
 @app.route("/")
 def Home_Page():
     return render_template("home.html")
 
-@app.route("/index.html")
 @app.route("/Index")
+@app.route("/index.html")
 def Index():
     return render_template("index.html")
 
-@app.route("/signup.html")
-@app.route("/Signup")
+@app.route("/Signup", methods=["GET", "POST"])
 def signup():
+    if request.method == "POST":
+        name = request.form['name']
+        login = request.form['login']
+        db = get_db()
+        try:
+            db.execute("INSERT INTO users (name, login) VALUES (?, ?)", (name, login))
+            db.commit()
+            return redirect(url_for('Home_Page'))
+        except sqlite3.IntegrityError:
+            return "Login already exists!", 400
     return render_template("signup.html")
 
-@app.route("/login.html")
-@app.route("/Login")
+@app.route("/Login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")    
+    if request.method == "POST":
+        login = request.form['login']
+        db = get_db()
+        user = db.execute("SELECT * FROM users WHERE login = ?", (login,)).fetchone()
+        if user:
+            return redirect(url_for('recommendations'))
+        return "Invalid login!", 401
+    return render_template("login.html")
 
-@app.route("/aboutus.html")
-@app.route("/Aboutus")
-def aboutus():
-    return render_template("info.html")
-
-@app.route("/recommendations.html")
 @app.route("/Recommendations")
 def recommendations():
-    return render_template("recommendations.html")
-
-@app.route("/partners.html")
-@app.route("/Partners")
-def Partners():
-    return render_template("partners.html")
-
-@app.route("/Recommendations/Random")
-def randomfilm():
-    selectrandom="select * from recommendations order by RAND() limit 1"
-    cursor.execute(selectrandom)
-    randomlist=cursor.fetchall()
-    return render_template("genre.html", film=randomlist)
-
+    db = get_db()
+    genres = db.execute("SELECT * FROM genres").fetchall()
+    return render_template("recommendations.html", genres=genres)
 
 @app.route("/Recommendations/<genre>")
 def randomgenre(genre):
-    selectQuery="select * from recommendations where Genre= '"+genre+"' order by RAND() limit 1"
-    cursor.execute(selectQuery)
-    filmlist=cursor.fetchall()
-    return render_template("genre.html", film=filmlist, gname=genre)
+    db = get_db()
+    movie = db.execute("""
+        SELECT title FROM movies
+        JOIN genres ON movies.genre_id = genres.id
+        WHERE genres.name = ?
+        ORDER BY RANDOM() LIMIT 1
+    """, (genre,)).fetchone()
+    if movie:
+        return render_template("genre.html", movie=movie['title'], genre=genre)
+    return f"No movies found for genre: {genre}", 404
 
-@app.route("/newfilm")
-def newRecord():
-    return render_template("newfilm.html")
-
-@app.route("/saverecord",methods=["POST"])
-def saverecord():
-    cursor.execute("insert into recommendations values('"+ request.form['genrename']+"','"+request.form['filmname']+"')")
-    db.commit()
-    return redirect(url_for('Home_Page'))
-
-@app.route("/Filmshowings/")
-def listfilms():
-    headings=("Film", "Runtime", "Age Rating")
-    findshowings="select film.id, film, runtime, agerating.rating from film join agerating where agerating.id=film.agerating;"
-    cursor.execute(findshowings)
-    showings=cursor.fetchall()
-    return render_template("showtimes.html", headings=headings, show=showings)
-
-@app.route("/Filmshowings/<fname>")
-def findshowings(fname):
-    findshowings="select event.id, film.film, event.date, event.time from event join filmevent on event.id=filmevent.eventid join film on filmevent.filmid=film.id where filmevent.filmid=%s"
-    cursor.execute(findshowings, (fname,))
-    time=cursor.fetchall()
-    return render_template("showtimes.html", time=time, fname=fname)
-
-@app.route("/Filmshowings/<fname>/<event>")
-def findvenue(fname, event):
-    findvenue = "SELECT cinema.id, film, cinemaname, event.date, event.time FROM cinema JOIN film JOIN event ON film.id = film.id WHERE film.id = %s AND event.id = %s"
-    heading=("Film", "Venue", "Date", "Time")
-    cursor.execute(findvenue, (fname, event))
-    venue = cursor.fetchall()
-    return render_template("showtimes.html", location=venue, fname=fname, event=event, heading=heading)
-
-
-app.run(debug=True)   
+if __name__ == "__main__":
+    app.run(debug=True)
