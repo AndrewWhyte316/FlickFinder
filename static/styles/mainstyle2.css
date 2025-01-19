@@ -29,14 +29,13 @@ body {
     color: #FFFFFF !important;
 }
 
-
 .signup-box {
     width: auto;
     height: auto;
     align-self: center;
     border-radius: 3px;
     box-sizing: inherit;
-  }
+}
 
 .login-box {
     width: auto;
@@ -44,60 +43,58 @@ body {
     align-self: center;
     border-radius: 3px;
     box-sizing: inherit;
-  }
+}
 
-  .form_group{
+.form_group{
     display: flex;
     flex-direction: column;
-  }
-  
-    .row{
+}
+
+.row{
     display: inline-flex;
     padding: 20px;
     align-self: auto    ;
-  }
+}
 
-  .d-block {
+.d-block {
     max-height: 350px;
-  }
+}
 
-  
-  .search{
+.search{
     padding-right: 50px;
-  }
+}
 
-  .form-entry{
+.form-entry{
     display: inline-flex;  
     flex: 0 0 auto;
     max-width: 800px;
     align-self: center;
-  }
+}
 
-  .linky{text-decoration: none}
+.linky{text-decoration: none}
 
-  .column{
-     flex: 0 0 auto;
+.column{
+    flex: 0 0 auto;
     max-width: 20%;
     padding: 1px 4px;
-  }
+}
 /* .columns{
-  align-self: center;
- } */
+    align-self: center;
+} */
 
-  .image {
+.image {
     height: 100%;
     width: 100%;
     border-radius: 30px;
+}
 
-  }
-
-  .img__wrap {
+.img__wrap {
     position: relative;
     max-height: 250px;
     max-width: 250px;
-  
-  }
-  .img__description_layer {
+}
+
+.img__description_layer {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -113,45 +110,42 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: opacity .2s, visibility .2s;
+}
 
-  
-     transition: opacity .2s, visibility .2s;
-  }
-  
-  .img__wrap:hover .img__description_layer {
+.img__wrap:hover .img__description_layer {
     visibility: visible;
     opacity: 1;
-  }
-  
-  .img__description {
+}
+
+.img__description {
     transition: .2s;
     transform: translateY(1em);
-  }
-  
-  .img__wrap:hover .img__description {
-    transform: translateY(0);
-  }
+}
 
-  .footer {
+.img__wrap:hover .img__description {
+    transform: translateY(0);
+}
+
+.footer {
     background-color: #B72A33;
     color: #D39F36;
     text-shadow: #000000 0px 0px 2px;
-  }
+}
 
-  .footer li a {
+.footer li a {
     color: #D39F36;
     text-shadow: #000000 0px 0px 2px;
     text-decoration: none;
-  }
+}
 
-  .results { font-size: xx-large; color: #D39F36; border: 0; --bs-bg-opacity: 0; }
+.results { font-size: xx-large; color: #D39F36; border: 0; --bs-bg-opacity: 0; }
 
-  .filmstable {
+.filmstable {
     text-align: center;
-  }
+}
 
-  .copy{
+.copy{
     color:#000000;
     text-shadow: yellow 0px 0px 1px;
-  }
-
+}

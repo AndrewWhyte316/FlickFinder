@@ -1,45 +1,43 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand');
 body {
-      
-      font: 20px Quicksand, sans-serif;
-      line-height: 1.8;
-      color: #050505; 
-      background-color: darkslategrey;
-      text-align: center;
-  }
+    font: 20px Quicksand, sans-serif;
+    line-height: 1.8;
+    color: #050505;
+    background-color: darkslategrey;
+    text-align: center;
+}
   
-  .flex-container {
+.flex-container {
     display: flex;
     justify-content: center;
     flex-direction: row;
-  }
-  
- 
-  @media (max-width: 100%) {
-    .flex-container {
-      justify-content: center;
-      flex-direction: column;
-    }
-  }
+}
 
+@media (max-width: 100%) {
+  .flex-container {
+    justify-content: center;
+    flex-direction: column;
+  }
+}
 
 .split {
-  height: 80%;
-  width: 50%;
-  position: absolute;
-  z-index: 1;
-  top: 10%;
-  bottom: 10%;
-  overflow-x: scroll;
-  padding-top: 0pc;
+    height: 80%;
+    width: 50%;
+    position: absolute;
+    z-index: 1;
+    top: 10%;
+    bottom: 10%;
+    overflow-x: scroll;
+    padding-top: 0;
 }
+
 footer {
-bottom: auto;
-justify-content: center;
+    bottom: auto;
+    justify-content: center;
 }
 
 .left {
-  left: 0;
+    left: 0;
 
 }
 

@@ -2,46 +2,52 @@
 
 
 body {
-      
-      font: 20px Lilita One, cursive;
-      line-height: 1.8;
-      color: #f5f6f7;
-      background-color: #09090B;
-  }
-  h1 {
+    font: 20px Lilita One, cursive;
+    line-height: 1.8;
+    color: #f5f6f7;
+    background-color: #09090B;
+}
+
+h1 {
     padding-top: 70px;
     color: #B72A33;
-  }
+}
 
-  footer{
+footer{
     padding-top: 70px;
     padding-bottom: 70px;
     text-align: center;
-  }
+}
 
-  p {font-size: 16px;}
-  .margin {margin-bottom: 45px;}
-  .bg-1 { 
-      /* background-color: #9B287B; Amaranth Deep Purple */
-      /* color: #ffffff; */
-  }
-  .bg-2 { 
-      /* background-color: #122932; Dark Gunmetal */
-      /* color: #ffffff; */
-  }
-  .bg-3 { 
-      /* background-color: #F5E6E8; Isabelline */
-      color: #555555;
-  }
-  .bg-4 { 
-      /* background-color: #383B53; Charcoal */
-      /* color: #fff; */
-  }
-  .container-fluid {
-      padding-top: 70px;
-      padding-bottom: 70px;
-      
-  }
+p {font-size: 16px;}
+
+.margin {margin-bottom: 45px;}
+
+.bg-1 {
+    /* background-color: #9B287B; Amaranth Deep Purple */
+    /* color: #ffffff; */
+}
+
+.bg-2 {
+    /* background-color: #122932; Dark Gunmetal */
+    /* color: #ffffff; */
+}
+
+.bg-3 {
+    /* background-color: #F5E6E8; Isabelline */
+    color: #555555;
+}
+
+.bg-4 {
+    /* background-color: #383B53; Charcoal */
+    /* color: #fff; */
+}
+
+.container-fluid {
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
 .navbar {
     padding-top: 15px;
     padding-bottom: 15px;
@@ -52,13 +58,14 @@ body {
     letter-spacing: 5px;
     background-color: #B72A33;
     
- }
- .navbar-nav  li a:hover {
-      color: #9B287B !important;
-      color: #D39F36;
-  }
+}
 
-  .bg-img-1 {
+.navbar-nav  li a:hover {
+    color: #9B287B !important;
+    color: #D39F36;
+}
+
+.bg-img-1 {
     background-image:url("https://www.odeon.co.uk/media/vzpb0net/twitter-header.jpg");
 }
 
@@ -79,5 +86,4 @@ body {
     background-size: contain;
     background-repeat: no-repeat;
     height: 60vh;
-
 }
