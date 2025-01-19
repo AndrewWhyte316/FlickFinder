@@ -1,43 +1,49 @@
 from flask import Flask, render_template,request,redirect,url_for
-import mysql.connector
+# import mysql.connector
 app=Flask(__name__)
 
-db=mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="password",
-    database="picknflix"
-)
-
-cursor=db.cursor()
+# db=mysql.connector.connect(
+#     host="localhost",
+#     user="root",
+#     password="password",
+#     database="picknflix"
+# )
+#
+# cursor=db.cursor()
 
 i=0
 
+@app.route("/home.html")
 @app.route("/")
 def Home_Page():
     return render_template("home.html")
 
+@app.route("/index.html")
 @app.route("/Index")
 def Index():
     return render_template("index.html")
 
-
+@app.route("/signup.html")
 @app.route("/Signup")
 def signup():
     return render_template("signup.html")
 
+@app.route("/login.html")
 @app.route("/Login")
 def login():
     return render_template("login.html")    
 
+@app.route("/aboutus.html")
 @app.route("/Aboutus")
 def aboutus():
     return render_template("info.html")
 
+@app.route("/recommendations.html")
 @app.route("/Recommendations")
 def recommendations():
     return render_template("recommendations.html")
 
+@app.route("/partners.html")
 @app.route("/Partners")
 def Partners():
     return render_template("partners.html")
