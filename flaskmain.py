@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, g
 import sqlite3
+import bcrypt
 
 app=Flask(__name__)
 DATABASE = 'FlickFinder.db'
@@ -31,25 +32,39 @@ def Index():
 def signup():
     if request.method == "POST":
         name = request.form['name']
+        email = request.form['email']
         login = request.form['login']
+        password = request.form['password']
         db = get_db()
         try:
-            db.execute("INSERT INTO users (name, login) VALUES (?, ?)", (name, login))
+            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            db.execute("""
+                INSERT INTO users (name, email, login, password)
+                VALUES (?, ?, ?, ?)
+            """, (name, email, login, hashed_password))
             db.commit()
             return redirect(url_for('Home_Page'))
         except sqlite3.IntegrityError:
-            return "Login already exists!", 400
+            return "Login or email already exists!", 400
     return render_template("signup.html")
 
 @app.route("/Login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         login = request.form['login']
+        password = request.form['password']
         db = get_db()
-        user = db.execute("SELECT * FROM users WHERE login = ?", (login,)).fetchone()
-        if user:
-            return redirect(url_for('recommendations'))
-        return "Invalid login!", 401
+
+        # Checks the database
+        user = db.execute("""
+            SELECT * FROM users WHERE login = ? AND password = ?
+        """, (login, password)).fetchone()
+
+        # Checks if the user exists and the password is correct
+        if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+            # Successful login
+            return redirect(url_for('Home_Page'))
+        return "Invalid login or password!", 401
     return render_template("login.html")
 
 @app.route("/Recommendations")

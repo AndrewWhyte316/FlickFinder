@@ -55,37 +55,25 @@
             <form>
                 <h2>Sign Up</h2>
                 <h4>It's free and only takes a minute</h4>
-                    <form>
-                    <p class="form_group">
-                        <label>First Name</label>
-                        <input type="text" placeholder="" />
-                    </p>
-                    <p class="form_group">
-                        <label>Last Name</label>
-                        <label>
-                            <input type="text" placeholder="" />
-                        </label>
-                    </p>
-                    <p class="form_group">
-                        <label>Email</label>
-                        <label>
-                            <input type="email" placeholder="" />
-                        </label>
-                    </p>
-                    <p class="form_group">
-                        <label>Password</label>
-                        <label>
-                            <input type="password" placeholder="" />
-                        </label>
-                    </p>
-                    <p class="form_group"><label>Confirm Password</label>
-                        <label>
-                            <input type="password" placeholder="" />
-                        </label>
-                    </p>
-                    <input type="button" value="Submit" />
-                    <closeform></closeform>
-                    </form>
+                <form method="post" action="/Signup">
+                    <div>
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div>
+                        <label for="login">Login</label>
+                        <input type="text" id="login" name="login" required>
+                    </div>
+                    <div>
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit">Sign Up</button>
+                </form>
             </form>
         </div>
     </div>

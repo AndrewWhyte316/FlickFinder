@@ -50,22 +50,17 @@
     <div class="row">
         <div>
             <form>
-            <h2>Login</h2>
-                <form>
-                    <p class="form_group">
-                    <label>Email</label>
-                    <label>
-                        <input type="email" placeholder="" />
-                    </label>
-                    </p>
-                    <p class="form_group">
-                    <label>Password</label>
-                    <label>
-                        <input type="password" placeholder="" />
-                    </label>
-                    </p>
-                    <input type="button" value="Submit" />
-                    <closeform></closeform>
+                <h2>Login</h2>
+                <form method="post" action="/Login">
+                    <div class="mb-3">
+                        <label for="login" class="form-label">Login</label>
+                        <input type="text" class="form-control" id="login" name="login" placeholder="Enter your username or email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
                 </form>
             </form>
         </div>
