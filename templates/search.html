@@ -1,7 +1,43 @@
 {% extends "base.html" %}
 
-{% block title %}Sign In{% endblock %}
+{% block title %}Search{% endblock %}
 
 {% block content %}
+    <div class="container mt-4">
+        <h1>Search</h1>
+        <form method="GET" action="/Search" class="mb-4">
+            <div class="input-group">
+                <input type="text" class="form-control" name="query" placeholder="Search for genres (e.g., Action)" required>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
 
+        {% if results %}
+            <h2>Results for "{{ query }}"</h2>
+            <div class="results">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Movie Title</th>
+                        <th>Genre</th>
+                        <th>Showtime</th>
+                        <th>Cinema</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for result in results %}
+                        <tr>
+                            <td>{{ result.title }}</td>
+                            <td>{{ result.genre }}</td>
+                            <td>{{ result.time }}</td>
+                            <td>{{ result.cinema }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% elif query %}
+            <p class="results">No results found for "{{ query }}".</p>
+        {% endif %}
+    </div>
 {% endblock %}

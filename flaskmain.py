@@ -27,15 +27,13 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+
+
 # Routes
 @app.route("/")
 def Home_Page():
     return render_template("home.html")
 
-@app.route("/Index")
-@app.route("/index.html")
-def Index():
-    return render_template("index.html")
 
 @app.route("/Signup", methods=["GET", "POST"])
 def signup():
@@ -56,6 +54,7 @@ def signup():
         except sqlite3.IntegrityError:
             return "Username or email already exists!", 400
     return render_template("signup.html")
+
 
 @app.route("/Login", methods=["GET", "POST"])
 def login():
@@ -97,17 +96,20 @@ def login():
 
     return render_template("login.html")
 
+
 @app.route("/logout")
 def logout():
     """Log user out"""
     session.clear()
     return redirect("/login")
 
+
 @app.route("/Recommendations")
 def recommendations():
     db = get_db()
     genres = db.execute("SELECT * FROM genres").fetchall()
     return render_template("recommendations.html", genres=genres)
+
 
 @app.route("/Recommendations/<genre>")
 def randomgenre(genre):
@@ -122,23 +124,26 @@ def randomgenre(genre):
         return render_template("genre.html", movie=movie['title'], genre=genre)
     return f"No movies found for genre: {genre}", 404
 
+
 @app.route("/Aboutus")
 def about_us():
     """About Us page"""
     return render_template("info.html")
 
-@app.route("/Filmshowings/")
+
+@app.route("/Filmshowings")
 def film_showings():
     """Film Times page"""
-    # Example data (replace with your actual database query results)
+    db = get_db()
     headings = ["Film", "Time", "Location"]
-    show = [("film1", "Inception", "7:00 PM"), ("film2", "Avatar", "9:00 PM")]
-    time = [("t1", "10:00 AM", "Morning"), ("t2", "8:00 PM", "Evening")]
-    location = [("loc1", "Cinema 1", "Cambridge", "123 Main St"),
-                ("loc2", "Cinema 2", "Boston", "456 Elm St")]
+    show = db.execute("SELECT id, title, time, location FROM movies").fetchall()
+    time = db.execute("SELECT id, time, period FROM showtimes").fetchall()
+    location = db.execute("SELECT id, name, city, address FROM cinemas").fetchall()
 
-    # Render the template with data
-    return render_template("showtimes.html", headings=headings, show=show, time=time, location=location)
+    return render_template(
+        "showtimes.html", headings=headings, show=show, time=time, location=location
+    )
+
 
 @app.route("/Profile", methods=["GET", "POST"])
 def profile():
@@ -175,6 +180,60 @@ def profile():
     """, (session["user_id"],)).fetchone()
 
     return render_template("profile.html", user=user)
+
+
+@app.route("/Search", methods=["GET"])
+def search():
+    """Search for movies by genre"""
+    query = request.args.get("query", "").strip().lower()  # Normalize user input
+    results = []
+
+    if query:
+        db = get_db()
+
+        # SQL query to get movies for a genre with showtimes and cinema locations
+        results = db.execute("""
+            SELECT 
+                movies.title AS movie_title,
+                genres.name AS genre_name,
+                showtimes.time AS showtime,
+                cinemas.name AS cinema_name
+            FROM movies
+            JOIN genres ON movies.genre_id = genres.id
+            JOIN showtimes ON showtimes.movie_id = movies.id
+            JOIN cinemas ON showtimes.cinema_id = cinemas.id
+            WHERE LOWER(genres.name) LIKE ?
+        """, (f"%{query}%",)).fetchall()
+
+        # Convert results into a list of dictionaries for rendering in the template
+        results = [
+            {
+                "title": row["movie_title"],
+                "genre": row["genre_name"],
+                "time": row["showtime"],
+                "cinema": row["cinema_name"],
+            }
+            for row in results
+        ]
+
+    return render_template("search.html", results=results, query=query)
+
+
+
+
+@app.route("/Genre/<genre>")
+def genre_recommendations(genre):
+    """Recommendations for a specific genre"""
+    db = get_db()
+
+    # Fetch genre-specific films
+    films = db.execute(
+        "SELECT id, title FROM movies WHERE genre_id = (SELECT id FROM genres WHERE name = ?)", (genre,)
+    ).fetchall()
+
+    return render_template("genre.html", gname=genre, film=films)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -78,9 +78,6 @@ body {
     max-width: 20%;
     padding: 1px 4px;
 }
-/* .columns{
-    align-self: center;
-} */
 
 .image {
     height: 100%;
@@ -137,6 +134,19 @@ body {
     color: #D39F36;
     text-shadow: #000000 0px 0px 2px;
     text-decoration: none;
+}
+
+.table, .table-striped {
+    --bs-table-color: #D39F36 !important;
+    --bs-table-striped-color: #D39F36 !important;
+    --bs-table-hover-color: #D39F36 !important;
+    --bs-table-active-color: #D39F36 !important;
+    color: #D39F36 !important;
+}
+
+.table th, .table td {
+    color: #D39F36 !important;
+    text-shadow: 1px 1px 2px #000;
 }
 
 .results { font-size: xx-large; color: #D39F36; border: 0; --bs-bg-opacity: 0; }
